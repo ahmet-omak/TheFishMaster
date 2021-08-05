@@ -1,26 +1,22 @@
-﻿using UnityEngine.UI;
+﻿using System.Collections;
+using UnityEngine.UI;
 using UnityEngine;
 using DG.Tweening;
 
 [SelectionBase]
 public class HookController : MonoBehaviour
 {
-    [Header("Debug")]
-    [SerializeField] GameObject hookedObject;
-    [SerializeField] Button hookButton;
+    /*TODOS:
+     * 
+    */
+
+    [Header("Debug Values")]
     [SerializeField] bool isHookMoving;
-    [SerializeField] int length;
-    [SerializeField] int strength;
 
-    [Header("Normal")]
-    [Range(1f, 10f)]
-    [SerializeField] float fishingDownwardsTime;
-
-    [Range(1f, 10f)]
-    [SerializeField] float fishingUpwardsTime;
-
-    [Range(0f, 1f)]
-    [SerializeField] float fishingUpwardsBurstTime;
+    [Header("Normal Values")]
+    [SerializeField] GameObject hookedObject;
+    [SerializeField] HookData hookData;
+    [SerializeField] Button hookButton;
 
     private new CircleCollider2D collider;
     private Tweener camTweener;
@@ -67,7 +63,7 @@ public class HookController : MonoBehaviour
         isHookMoving = true;
         hookButton.gameObject.SetActive(false);
         fishCount = 0;
-        camTweener = cam.transform.DOMoveY(length, fishingDownwardsTime).OnUpdate(delegate
+        camTweener = cam.transform.DOMoveY(hookData.HookLength, hookData.FishingDownwardsTime).OnUpdate(delegate
         {
             if (cam.transform.position.y <= -11f)
             {
@@ -76,7 +72,7 @@ public class HookController : MonoBehaviour
         }).OnComplete(delegate
         {
             collider.enabled = true;
-            camTweener = cam.transform.DOMoveY(0, fishingUpwardsTime).OnUpdate(delegate
+            camTweener = cam.transform.DOMoveY(0, hookData.FishingUpwardsTime).OnUpdate(delegate
              {
                  if (cam.transform.position.y >= -25f)
                  {
@@ -90,7 +86,7 @@ public class HookController : MonoBehaviour
     private void StopFishing()
     {
         camTweener.Kill(false);
-        camTweener = cam.transform.DOMoveY(0, fishingUpwardsBurstTime).OnUpdate(delegate
+        camTweener = cam.transform.DOMoveY(0, hookData.FishingUpwardsBurstTime).OnUpdate(delegate
              {
                  if (cam.transform.position.y >= -11)
                  {
@@ -99,9 +95,15 @@ public class HookController : MonoBehaviour
                  }
              }).OnComplete(delegate
              {
-                 collider.enabled = true;
-                 hookButton.gameObject.SetActive(true);
-                 isHookMoving = false;
+                 StartCoroutine(WaitFishingRoutine(hookData.WaitTime));
              });
+    }
+
+    private IEnumerator WaitFishingRoutine(float time)
+    {
+        yield return new WaitForSecondsRealtime(time);
+        hookButton.gameObject.SetActive(true);
+        collider.enabled = true;
+        isHookMoving = false;
     }
 }
