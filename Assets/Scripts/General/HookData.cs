@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-[CreateAssetMenu(menuName = "The Fish Master/HookController Data", fileName = "HookControllerData")]
+[CreateAssetMenu(menuName = "The Fish Master/Create A Hook Data", fileName = "HookControllerData")]
 public class HookData : ScriptableObject
 {
     [Range(1f, 10f)]
