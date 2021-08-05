@@ -4,7 +4,7 @@ using UnityEngine;
 using DG.Tweening;
 
 [SelectionBase]
-public class HookController : MonoBehaviour
+public class HookController : MonoBehaviour,ITweenable
 {
     /*TODOS:
      * 
@@ -24,16 +24,11 @@ public class HookController : MonoBehaviour
     private Vector3 startPos;
     private int fishCount;
 
-
     private void Awake()
     {
         //Camera Initialization
         cam = Camera.main;
         collider = GetComponent<CircleCollider2D>();
-
-        //DOTween Initialization
-        DOTween.Init(true, true, LogBehaviour.ErrorsOnly);
-        DOTween.defaultEaseType = Ease.Linear;
     }
 
     private void Start()
@@ -105,5 +100,11 @@ public class HookController : MonoBehaviour
         hookButton.gameObject.SetActive(true);
         collider.enabled = true;
         isHookMoving = false;
+    }
+
+    public void InitDOTween()
+    {
+        DOTween.Init(true, true, LogBehaviour.ErrorsOnly);
+        DOTween.defaultEaseType = Ease.OutQuart;
     }
 }
