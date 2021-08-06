@@ -14,12 +14,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   screenBoundX: 8
   scaleX: 0.2
-  fish:
-    moveDirection: 0
-    sprite: {fileID: 21300000, guid: ae68ca1fecd6d8140a8ce8bfaf971e4f, type: 3}
-    count: 0
-    price: 0
-    movingTime: 2
-    beginDelayTime: 1
-    minPosY: -30
-    maxPosY: -50
+  fishSprites:
+  - {fileID: 21300000, guid: 682af363b3054e54187879ecc7b73912, type: 3}
+  - {fileID: 21300000, guid: ae68ca1fecd6d8140a8ce8bfaf971e4f, type: 3}
+  - {fileID: 21300000, guid: d9f793b6929e4bf4abd82276a05d1f41, type: 3}
+  - {fileID: 21300000, guid: 55b81a036c3b9194e9eae5d591a0fec9, type: 3}
+  - {fileID: 21300000, guid: 23985e9251a4ad847a424ef505d8265e, type: 3}
+  - {fileID: 21300000, guid: d78b9ccaa1702954c8ae617ff3f3b2c0, type: 3}
+  - {fileID: 21300000, guid: cf749be3dd32f4e4b9dc4502845d0095, type: 3}
+  - {fileID: 21300000, guid: 475e969a261140044adb429b0c043f3e, type: 3}
+  - {fileID: 21300000, guid: 9c8c15c5d91e6f948bf7e6a784f178bc, type: 3}
+  - {fileID: 21300000, guid: 6af4825c8952a844c8680044c17bf6c0, type: 3}
+  - {fileID: 21300000, guid: 0ba2ee017df4ab5478db37f511512d0d, type: 3}
+  - {fileID: 21300000, guid: 2b73876152717b14fb51a62af8cc16ac, type: 3}
+  - {fileID: 21300000, guid: 2b73876152717b14fb51a62af8cc16ac, type: 3}

@@ -6,10 +6,6 @@ using DG.Tweening;
 [SelectionBase]
 public class HookController : MonoBehaviour,ITweenable
 {
-    /*TODOS:
-     * 
-    */
-
     [Header("Debug Values")]
     [SerializeField] bool isHookMoving;
 
@@ -26,7 +22,6 @@ public class HookController : MonoBehaviour,ITweenable
 
     private void Awake()
     {
-        //Camera Initialization
         cam = Camera.main;
         collider = GetComponent<CircleCollider2D>();
     }

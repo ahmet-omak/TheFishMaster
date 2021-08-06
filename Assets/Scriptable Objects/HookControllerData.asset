@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fishingDownwardsTime: 6
   fishingUpwardsTime: 6
-  fishingUpwardsBurstTime: 0.8
+  fishingUpwardsBurstTime: 1
   hookLength: -50
   hookStrength: 3
   waitTime: 1.5

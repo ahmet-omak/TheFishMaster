@@ -1,28 +1,22 @@
 ﻿using UnityEngine;
 using DG.Tweening;
 
-public class FishController : MonoBehaviour,ITweenable
+public class FishController : MonoBehaviour, ITweenable
 {
-    /*TODOS:
-     * Reset fish parameters each time new fish instantiated
-     * Make a func. to set fish parameters
-     */
     [SerializeField] FishData fishData;
+    [SerializeField] Fish fish;
 
     private SpriteRenderer spriteRenderer;
-    private CircleCollider2D circleCollider;
     private Tweener fishTweener;
 
     private void Awake()
     {
         //Reference Components
         spriteRenderer = GetComponent<SpriteRenderer>();
-        circleCollider = GetComponent<CircleCollider2D>();
-
-        //Assign Sprite
-        spriteRenderer.sprite = fishData.Fish.sprite;
 
         InitDOTween();
+
+        SetParameters();
     }
 
     private void Start()
@@ -36,18 +30,34 @@ public class FishController : MonoBehaviour,ITweenable
         {
             fishTweener.Kill(false);
         }
-
-        float randomPosY = Random.Range(fishData.Fish.minPosY, fishData.Fish.maxPosY);
-        float endValue = fishData.Fish.moveDirection == Fish.Direction.Right ? fishData.ScreenBoundX : -fishData.ScreenBoundX;
-        float startScaleX = fishData.Fish.moveDirection == Fish.Direction.Right ? fishData.ScaleX : -fishData.ScaleX;
-
-        transform.position = new Vector2(transform.position.x, randomPosY);
-        transform.localScale = new Vector2(startScaleX, transform.localScale.y);
-
-        fishTweener = transform.DOMoveX(endValue, fishData.Fish.movingTime).SetDelay(fishData.Fish.beginDelayTime).SetLoops(-1, LoopType.Yoyo).OnStepComplete(delegate
+        fishTweener = transform.DOMoveX(fishData.EndValueX, fish.movingTime)
+            .SetDelay(fish.beginDelayTime)
+            .SetLoops(-1, LoopType.Yoyo)
+            .OnStepComplete(delegate
         {
             transform.localScale = new Vector3(transform.localScale.x * -1, transform.localScale.y, transform.localScale.z);
         });
+    }
+
+    private void SetParameters()
+    {
+        //All Parameters For Current Fish Object
+        fish.minPosY = Random.Range(-30f, -50f);
+        fish.maxPosY = Random.Range(-30f, -50f);
+        fishData.RandomPosY = Random.Range(fish.minPosY, fish.maxPosY);
+        transform.position = new Vector2(transform.position.x, fishData.RandomPosY);
+
+        fish.moveDirection = Random.Range(0, 2) == 0 ? Fish.Direction.Right : Fish.Direction.Left;
+        fishData.EndValueX = fish.moveDirection == Fish.Direction.Right ? fishData.ScreenBoundX : -fishData.ScreenBoundX;
+        fishData.StartScaleX = fish.moveDirection == Fish.Direction.Right ? fishData.ScaleX : -fishData.ScaleX;
+        transform.localScale = new Vector2(fishData.StartScaleX, transform.localScale.y);
+
+        spriteRenderer.sprite = fishData.FishSprites[Random.Range(0, fishData.FishSprites.Count)];
+
+        fish.movingTime = Random.Range(1f, 3f);
+        fish.beginDelayTime = Random.Range(0f, 3f);
+        fish.count = Random.Range(1, 5);
+        fish.price = Random.Range(100, 1000);
     }
 
     public void InitDOTween()
