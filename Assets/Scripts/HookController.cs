@@ -91,10 +91,10 @@ public class HookController : MonoBehaviour,ITweenable
 
     private IEnumerator WaitFishingRoutine(float time)
     {
+        isHookMoving = false;
         yield return new WaitForSecondsRealtime(time);
         hookButton.gameObject.SetActive(true);
         collider.enabled = true;
-        isHookMoving = false;
     }
 
     public void InitDOTween()

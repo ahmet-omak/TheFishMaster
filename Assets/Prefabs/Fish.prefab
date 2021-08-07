@@ -27,8 +27,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5663223457530485840}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
+  m_LocalPosition: {x: 0, y: -37.727222, z: 0}
+  m_LocalScale: {x: 0.2, y: 0.2, z: 0}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -88,7 +88,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: ae68ca1fecd6d8140a8ce8bfaf971e4f, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 682af363b3054e54187879ecc7b73912, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -114,10 +114,9 @@ MonoBehaviour:
   fishData: {fileID: 11400000, guid: d0881bbc99159f84f9da08d043195178, type: 2}
   fish:
     moveDirection: 0
-    sprite: {fileID: 21300000, guid: ae68ca1fecd6d8140a8ce8bfaf971e4f, type: 3}
     count: 1
-    price: 100
-    movingTime: 2
-    beginDelayTime: 1
-    minPosY: -30
-    maxPosY: -50
+    price: 785
+    movingTime: 1.015799
+    beginDelayTime: 0.5405499
+    minPosY: -46.971966
+    maxPosY: -37.55404
