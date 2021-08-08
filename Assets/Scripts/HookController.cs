@@ -1,10 +1,11 @@
-﻿using System.Collections;
+﻿using System.Collections.Generic;
+using System.Collections;
 using UnityEngine.UI;
 using UnityEngine;
 using DG.Tweening;
 
 [SelectionBase]
-public class HookController : MonoBehaviour,ITweenable
+public class HookController : MonoBehaviour, ITweenable
 {
     [Header("Debug Values")]
     [SerializeField] bool isHookMoving;
@@ -18,12 +19,14 @@ public class HookController : MonoBehaviour,ITweenable
     private Tweener camTweener;
     private Camera cam;
     private Vector3 startPos;
+    private List<FishController> hookedFishes;
     private int fishCount;
 
     private void Awake()
     {
         cam = Camera.main;
         collider = GetComponent<CircleCollider2D>();
+        hookedFishes = new List<FishController>();
     }
 
     private void Start()
@@ -50,13 +53,13 @@ public class HookController : MonoBehaviour,ITweenable
 
     public void StartFishing()
     {
-        isHookMoving = true;
         hookButton.gameObject.SetActive(false);
         fishCount = 0;
         camTweener = cam.transform.DOMoveY(hookData.HookLength, hookData.FishingDownwardsTime).OnUpdate(delegate
         {
             if (cam.transform.position.y <= -11f)
             {
+                isHookMoving = true;
                 transform.SetParent(cam.transform);
             }
         }).OnComplete(delegate
@@ -71,6 +74,7 @@ public class HookController : MonoBehaviour,ITweenable
              });
         });
         collider.enabled = false;
+        hookedFishes.Clear();
     }
 
     private void StopFishing()
@@ -93,13 +97,49 @@ public class HookController : MonoBehaviour,ITweenable
     {
         isHookMoving = false;
         yield return new WaitForSecondsRealtime(time);
+        int money = 0;
+        for (int i = 0; i < hookedFishes.Count; i++)
+        {
+            var currentHookedFish = hookedFishes[i].GetComponent<FishController>();
+            currentHookedFish.transform.SetParent(null);
+            currentHookedFish.SetParameters();
+            currentHookedFish.Move();
+            currentHookedFish.IsHooked = false;
+            money += currentHookedFish.fish.price;
+        }
         hookButton.gameObject.SetActive(true);
         collider.enabled = true;
+        fishCount = 0;
     }
 
     public void InitDOTween()
     {
         DOTween.Init(true, true, LogBehaviour.ErrorsOnly);
         DOTween.defaultEaseType = Ease.OutQuart;
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Fish") && fishCount != hookData.HookStrength)
+        {
+            Catch(collision);
+        }
+    }
+
+    private void Catch(Collider2D collision)
+    {
+        //Try to catch a fish
+        fishCount++;
+        var fish = collision.GetComponent<FishController>();
+        hookedFishes.Add(fish);
+        fish.IsHooked = true;
+        fish.transform.SetParent(transform);
+        fish.transform.position = hookedObject.transform.position;
+        fish.transform.rotation = hookedObject.transform.rotation;
+        collision.transform.DOShakeRotation(hookData.WaitTime, Vector3.forward * 45, 10, 90).SetLoops(1, LoopType.Yoyo);
+        if (fishCount == hookData.HookStrength)
+        {
+            StopFishing();
+        }
     }
 }

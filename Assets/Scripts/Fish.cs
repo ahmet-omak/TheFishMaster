@@ -1,4 +1,5 @@
 ﻿using System;
+using UnityEngine;
 
 [Serializable]
 class Fish
@@ -7,8 +8,12 @@ class Fish
     {
         Right, Left
     }
+
+    [Header("Normal Values")]
     public Direction moveDirection;
     public int price;
+
+    [Header("Debug Values")]
     public float movingTime;
     public float beginDelayTime;
     public float minPosY;
