@@ -53,7 +53,7 @@ public class HookController : MonoBehaviour, ITweenable
 
     public void StartFishing()
     {
-        hookButton.gameObject.SetActive(false);
+        hookButton.interactable = false;
         fishCount = 0;
         camTweener = cam.transform.DOMoveY(hookData.HookLength, hookData.FishingDownwardsTime).OnUpdate(delegate
         {
@@ -107,7 +107,7 @@ public class HookController : MonoBehaviour, ITweenable
             currentHookedFish.IsHooked = false;
             money += currentHookedFish.fish.price;
         }
-        hookButton.gameObject.SetActive(true);
+        hookButton.interactable = true;
         collider.enabled = true;
         fishCount = 0;
     }
