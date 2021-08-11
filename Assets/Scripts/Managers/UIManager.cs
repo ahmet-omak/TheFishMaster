@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using TMPro;
-using UnityEngine;
+﻿using System.Collections.Generic;
 using UnityEngine.UI;
+using UnityEngine;
+using System;
+using TMPro;
 
 public class UIManager : SingletonMonoBehaviour<UIManager>
 {
@@ -100,31 +100,35 @@ public class UIManager : SingletonMonoBehaviour<UIManager>
 
     public void OnLengthButtonClicked()
     {
+        GameManager.Instance.wallet -= GameManager.Instance.lengthCost;
+        PlayerPrefs.SetInt("Wallet", GameManager.Instance.wallet);
+
         PlayerPrefs.SetInt("Length", PlayerPrefs.GetInt("Length", 30) + 10);
-
         GameManager.Instance.length = PlayerPrefs.GetInt("Length", 30);
-
+        
         GameManager.Instance.UpdateLengthCost();
-
         mainScreen.idleButtons.UpdateLengthButton(GameManager.Instance.length, GameManager.Instance.lengthCost);
 
         PlayerPrefs.SetInt("Wallet", GameManager.Instance.wallet);
+
         mainScreen.UpdateWalletText();
+        
         UpdateIdleButtons();
     }
 
     public void OnStrengthButtonClicked()
     {
-        PlayerPrefs.SetInt("Strength", PlayerPrefs.GetInt("Strength", 3) + 1);
+        GameManager.Instance.wallet -= GameManager.Instance.strengthCost;
+        PlayerPrefs.SetInt("Wallet", GameManager.Instance.wallet);
 
+        PlayerPrefs.SetInt("Strength", PlayerPrefs.GetInt("Strength", 3) + 1);
         GameManager.Instance.strength = PlayerPrefs.GetInt("Strength", 3);
 
         GameManager.Instance.UpdateStrengthCost();
-
         mainScreen.idleButtons.UpdateStrengthButton(GameManager.Instance.strength, GameManager.Instance.strengthCost);
 
-        PlayerPrefs.SetInt("Wallet", GameManager.Instance.wallet);
         mainScreen.UpdateWalletText();
+
         UpdateIdleButtons();
     }
 
@@ -163,14 +167,12 @@ class IdleButton
     {
         lengthButtonTextArea.unitLength.text = length.ToString() + "M";
         lengthButtonTextArea.unitPrice.text = "$" + lengthCost.ToString();
-        GameManager.Instance.wallet -= GameManager.Instance.lengthCost;
     }
 
     public void UpdateStrengthButton(int strength, int strengthCost)
     {
         strengthButtonTextArea.unitLength.text = strength.ToString() + "M";
         strengthButtonTextArea.unitPrice.text = "$" + strengthCost.ToString();
-        GameManager.Instance.wallet -= GameManager.Instance.strengthCost;
     }
 
     public void UpdateOfflineEarningsButton()
