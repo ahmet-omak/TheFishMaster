@@ -53,9 +53,14 @@ public class HookController : MonoBehaviour, ITweenable
 
     public void StartFishing()
     {
+        if (GameManager.Instance.isGameOver)
+        {
+            return;
+        }
+        UIManager.Instance.FishingStart();
         hookButton.interactable = false;
         fishCount = 0;
-        camTweener = cam.transform.DOMoveY(hookData.HookLength, hookData.FishingDownwardsTime).OnUpdate(delegate
+        camTweener = cam.transform.DOMoveY(-GameManager.Instance.length, hookData.FishingDownwardsTime).OnUpdate(delegate
         {
             if (cam.transform.position.y <= -11f)
             {
@@ -67,7 +72,7 @@ public class HookController : MonoBehaviour, ITweenable
             collider.enabled = true;
             camTweener = cam.transform.DOMoveY(0, hookData.FishingUpwardsTime).OnUpdate(delegate
              {
-                 if (cam.transform.position.y >= -25f)
+                 if (cam.transform.position.y >= -10f)
                  {
                      StopFishing();
                  }
@@ -89,6 +94,7 @@ public class HookController : MonoBehaviour, ITweenable
                  }
              }).OnComplete(delegate
              {
+                 UIManager.Instance.FishingStop(hookedFishes);
                  StartCoroutine(WaitFishingRoutine(hookData.WaitTime));
              });
     }
@@ -120,7 +126,7 @@ public class HookController : MonoBehaviour, ITweenable
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Fish") && fishCount != hookData.HookStrength)
+        if (collision.CompareTag("Fish") && fishCount != GameManager.Instance.strength)
         {
             Catch(collision);
         }
@@ -137,7 +143,7 @@ public class HookController : MonoBehaviour, ITweenable
         fish.transform.position = hookedObject.transform.position;
         fish.transform.rotation = hookedObject.transform.rotation;
         collision.transform.DOShakeRotation(hookData.WaitTime, Vector3.forward * 45, 10, 90).SetLoops(1, LoopType.Yoyo);
-        if (fishCount == hookData.HookStrength)
+        if (fishCount == GameManager.Instance.strength)
         {
             StopFishing();
         }

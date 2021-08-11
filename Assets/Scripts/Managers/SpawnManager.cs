@@ -14,7 +14,7 @@ public class SpawnManager : MonoBehaviour
     {
         for (int i = 0; i < fishData.TotalFishCount; i++)
         {
-            var fish = Instantiate(fishPrefab);
+            Instantiate(fishPrefab,transform);
         }
     }
 }

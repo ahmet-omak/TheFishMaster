@@ -1,21 +1,17 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
+using System;
 
 public class GameManager : SingletonMonoBehaviour<GameManager>
 {
     [Header("Debug Values")]
     public int length;
     public int lengthCost;
-
     public int strength;
     public int strengthCost;
-
     public int offlineEarnings;
     public int offlineEarningsCost;
-
     public int wallet;
     public int totalGain;
-
     public bool isGameOver;
 
     [SerializeField] Cost cost;
@@ -45,14 +41,24 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
 
     private void GetParameters()
     {
-        length = -PlayerPrefs.GetInt("Length", 30);
+        length = PlayerPrefs.GetInt("Length", 30);
         strength = PlayerPrefs.GetInt("Strength", 3);
         offlineEarnings = PlayerPrefs.GetInt("Offline", 3);
         wallet = PlayerPrefs.GetInt("Wallet", 0);
 
-        lengthCost = cost.allCosts[-length / 10 - 3];
-        strengthCost = cost.allCosts[strength - 3];
+        UpdateLengthCost();
+        UpdateStrengthCost();
         offlineEarningsCost = cost.allCosts[offlineEarnings - 3];
+    }
+
+    public void UpdateLengthCost()
+    {
+        lengthCost = cost.allCosts[length / 10 - 3];
+    }
+
+    public void UpdateStrengthCost()
+    {
+        strengthCost = cost.allCosts[strength - 3];
     }
 
     private void CalculateGainedMoney()
@@ -67,9 +73,9 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
 
     private void SetCostValues()
     {
-        cost.allCosts = new int[cost.count];
+        cost.allCosts = new int[cost.allCosts.Length];
         cost.allCosts[0] = cost.startCost;
-        for (int i = 1; i < cost.count; i++)
+        for (int i = 1; i < cost.allCosts.Length; i++)
         {
             cost.allCosts[i] = cost.allCosts[i - 1] + cost.incrementer * 2;
             cost.incrementer = UnityEngine.Random.Range(15, 30);

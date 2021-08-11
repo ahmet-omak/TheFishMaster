@@ -66,8 +66,8 @@ public class FishController : MonoBehaviour, ITweenable
     public void SetParameters()
     {
         //All Parameters For Current Fish Object
-        fish.minPosY = Random.Range(-35f, -55f);
-        fish.maxPosY = Random.Range(-35f, -55f);
+        fish.minPosY = Random.Range(-GameManager.Instance.length + 10f, -GameManager.Instance.length + 5f);
+        fish.maxPosY = Random.Range(-GameManager.Instance.length + 10f, -GameManager.Instance.length + 5f);
         fish.randomPosY = Random.Range(fish.minPosY, fish.maxPosY);
         transform.position = new Vector2(transform.position.x, fish.randomPosY);
         transform.rotation = Quaternion.identity;
@@ -81,7 +81,7 @@ public class FishController : MonoBehaviour, ITweenable
 
         fish.movingTime = Random.Range(1f, 3f);
         fish.beginDelayTime = Random.Range(0f, 3f);
-        fish.price = Random.Range(100, 1000);
+        fish.price = Random.Range(50, 100);
         collider.enabled = true;
     }
 
