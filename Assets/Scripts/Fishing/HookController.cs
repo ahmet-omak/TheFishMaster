@@ -53,11 +53,7 @@ public class HookController : MonoBehaviour, ITweenable
 
     public void StartFishing()
     {
-        if (GameManager.Instance.isGameOver)
-        {
-            return;
-        }
-        UIManager.Instance.FishingStart();
+        UIManager.Instance.OnFishingStarted();
         hookButton.interactable = false;
         fishCount = 0;
         camTweener = cam.transform.DOMoveY(-GameManager.Instance.length, hookData.FishingDownwardsTime).OnUpdate(delegate
@@ -94,7 +90,7 @@ public class HookController : MonoBehaviour, ITweenable
                  }
              }).OnComplete(delegate
              {
-                 UIManager.Instance.FishingStop(hookedFishes);
+                 UIManager.Instance.OnFishingStopped(hookedFishes);
                  StartCoroutine(WaitFishingRoutine(hookData.WaitTime));
              });
     }

@@ -1,11 +1,14 @@
 ﻿using System.Collections.Generic;
-using UnityEngine.UI;
 using UnityEngine;
-using System;
-using TMPro;
 
 public class UIManager : SingletonMonoBehaviour<UIManager>
 {
+    //TODO:
+    /*
+     * Code StartScreen
+     * Code money earn logic while waiting
+     */
+
     [SerializeField] MainScreen mainScreen;
 
     protected override void Awake()
@@ -20,22 +23,14 @@ public class UIManager : SingletonMonoBehaviour<UIManager>
 
     private void InitMainScreenParameters()
     {
-        //Set Wallet Text
-        mainScreen.walletText.text = "$" + GameManager.Instance.wallet.ToString();
+        UpdateWalletText();
+   
+        mainScreen.idleButtons.UpdateLengthButton(GameManager.Instance.length, GameManager.Instance.lengthCost);
+        
+        mainScreen.idleButtons.UpdateStrengthButton(GameManager.Instance.strength,GameManager.Instance.strengthCost);
 
-        //Length Button
-        mainScreen.idleButtons.lengthButtonTextArea.unitLength.text = GameManager.Instance.length.ToString() + "M";
-        mainScreen.idleButtons.lengthButtonTextArea.unitPrice.text = "$" + GameManager.Instance.lengthCost.ToString();
+        mainScreen.idleButtons.UpdateOfflineEarningsButton(GameManager.Instance.offlineEarnings, GameManager.Instance.offlineEarningsCost);
 
-        //Strength Button
-        mainScreen.idleButtons.strengthButtonTextArea.unitLength.text = GameManager.Instance.strength.ToString() + " Fishes";
-        mainScreen.idleButtons.strengthButtonTextArea.unitPrice.text = "$" + GameManager.Instance.strengthCost.ToString();
-
-        //Offline Earnings Button
-        mainScreen.idleButtons.offlineButtonTextArea.unitLength.text = "$" + GameManager.Instance.offlineEarnings.ToString() + "/Min";
-        mainScreen.idleButtons.offlineButtonTextArea.unitPrice.text = "$" + GameManager.Instance.offlineEarningsCost.ToString();
-
-        //Idle Buttons
         UpdateIdleButtons();
     }
 
@@ -75,13 +70,18 @@ public class UIManager : SingletonMonoBehaviour<UIManager>
         }
     }
 
-    public void FishingStart()
+    private void UpdateWalletText()
+    {
+        mainScreen.walletText.text = "$" + GameManager.Instance.wallet.ToString();
+    }
+
+    public void OnFishingStarted()
     {
         //What happens in UI when fishing starts
         mainScreen.sourceImage.gameObject.SetActive(false);
     }
 
-    public void FishingStop(List<FishController> hookedFishes)
+    public void OnFishingStopped(List<FishController> hookedFishes)
     {
         //What happens in UI when fishing stops
         mainScreen.sourceImage.gameObject.SetActive(true);
@@ -93,7 +93,7 @@ public class UIManager : SingletonMonoBehaviour<UIManager>
 
         PlayerPrefs.SetInt("Wallet", GameManager.Instance.wallet);
 
-        mainScreen.UpdateWalletText();
+        UpdateWalletText();
 
         UpdateIdleButtons();
     }
@@ -105,14 +105,14 @@ public class UIManager : SingletonMonoBehaviour<UIManager>
 
         PlayerPrefs.SetInt("Length", PlayerPrefs.GetInt("Length", 30) + 10);
         GameManager.Instance.length = PlayerPrefs.GetInt("Length", 30);
-        
+
         GameManager.Instance.UpdateLengthCost();
         mainScreen.idleButtons.UpdateLengthButton(GameManager.Instance.length, GameManager.Instance.lengthCost);
 
         PlayerPrefs.SetInt("Wallet", GameManager.Instance.wallet);
 
-        mainScreen.UpdateWalletText();
-        
+        UpdateWalletText();
+
         UpdateIdleButtons();
     }
 
@@ -127,73 +127,24 @@ public class UIManager : SingletonMonoBehaviour<UIManager>
         GameManager.Instance.UpdateStrengthCost();
         mainScreen.idleButtons.UpdateStrengthButton(GameManager.Instance.strength, GameManager.Instance.strengthCost);
 
-        mainScreen.UpdateWalletText();
+        UpdateWalletText();
 
         UpdateIdleButtons();
     }
 
     public void OnOfflineEarningsButtonClicked()
     {
+        GameManager.Instance.wallet -= GameManager.Instance.offlineEarningsCost;
+        PlayerPrefs.SetInt("Wallet", GameManager.Instance.wallet);
 
-    }
-}
+        PlayerPrefs.SetInt("Offline", PlayerPrefs.GetInt("Offline", 3) + 1);
+        GameManager.Instance.offlineEarnings = PlayerPrefs.GetInt("Offline", 3);
 
-[Serializable]
-class MainScreen
-{
-    public GameObject sourceImage;
-    public Image fishermanImage;
-    public TextMeshProUGUI walletText;
-    public IdleButton idleButtons;
+        GameManager.Instance.UpdateOfflineEarningCost();
+        mainScreen.idleButtons.UpdateOfflineEarningsButton(GameManager.Instance.offlineEarnings, GameManager.Instance.offlineEarningsCost);
 
-    public void UpdateWalletText()
-    {
-        walletText.text = "$" + GameManager.Instance.wallet.ToString();
-    }
-}
+        UpdateWalletText();
 
-[Serializable]
-class IdleButton
-{
-    public Button lengthButton;
-    public Button strengthButton;
-    public Button offlineEarningsButton;
-
-    public TextArea lengthButtonTextArea;
-    public TextArea strengthButtonTextArea;
-    public TextArea offlineButtonTextArea;
-
-    public void UpdateLengthButton(int length, int lengthCost)
-    {
-        lengthButtonTextArea.unitLength.text = length.ToString() + "M";
-        lengthButtonTextArea.unitPrice.text = "$" + lengthCost.ToString();
-    }
-
-    public void UpdateStrengthButton(int strength, int strengthCost)
-    {
-        strengthButtonTextArea.unitLength.text = strength.ToString() + "M";
-        strengthButtonTextArea.unitPrice.text = "$" + strengthCost.ToString();
-    }
-
-    public void UpdateOfflineEarningsButton()
-    {
-
-    }
-}
-
-[Serializable]
-class TextArea
-{
-    public TextMeshProUGUI unitLength;
-    public TextMeshProUGUI unitPrice;
-
-    public void UpdateUnitLength(int length)
-    {
-        unitLength.text = length.ToString();
-    }
-
-    public void UpdateUnitPrice(int price)
-    {
-        unitPrice.text = "$" + price;
+        UpdateIdleButtons();
     }
 }

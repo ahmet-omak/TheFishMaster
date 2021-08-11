@@ -12,7 +12,6 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
     public int offlineEarningsCost;
     public int wallet;
     public int totalGain;
-    public bool isGameOver;
 
     [SerializeField] Cost cost;
 
@@ -48,7 +47,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
 
         UpdateLengthCost();
         UpdateStrengthCost();
-        offlineEarningsCost = cost.allCosts[offlineEarnings - 3];
+        UpdateOfflineEarningCost();
     }
 
     public void UpdateLengthCost()
@@ -59,6 +58,11 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
     public void UpdateStrengthCost()
     {
         strengthCost = cost.allCosts[strength - 3];
+    }
+
+    public void UpdateOfflineEarningCost()
+    {
+        offlineEarningsCost = cost.allCosts[offlineEarnings - 3];
     }
 
     private void CalculateGainedMoney()
