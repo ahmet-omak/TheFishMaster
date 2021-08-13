@@ -1225,7 +1225,7 @@ GameObject:
   - component: {fileID: 705291522}
   - component: {fileID: 705291521}
   m_Layer: 5
-  m_Name: Total Money Text
+  m_Name: Gained Money Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2193,8 +2193,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -68}
-  m_SizeDelta: {x: 160, y: 124.422295}
+  m_AnchoredPosition: {x: 422.5, y: -241.4}
+  m_SizeDelta: {x: 338.20795, y: 439.3017}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1229556007
 MonoBehaviour:
@@ -2238,7 +2238,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1229556008}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1907413516}
+        m_MethodName: OnCollect2XButtonClicked
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1229556008
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3383,8 +3394,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 74.2}
-  m_SizeDelta: {x: 160, y: 124.422295}
+  m_AnchoredPosition: {x: 24.5, y: 277.7}
+  m_SizeDelta: {x: 643.0567, y: 448.0354}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1715681776
 MonoBehaviour:
@@ -3428,7 +3439,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1715681777}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1907413516}
+        m_MethodName: OnCollectButtonClicked
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1715681777
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3614,6 +3636,11 @@ MonoBehaviour:
       offlineButtonTextArea:
         unitLength: {fileID: 2018658991}
         unitPrice: {fileID: 199294287}
+  startScreen:
+    sourceImage: {fileID: 370392333}
+    collectButton: {fileID: 1715681776}
+    collect2XButton: {fileID: 1229556007}
+    gainedMoneyText: {fileID: 705291521}
 --- !u!1 &2018658989
 GameObject:
   m_ObjectHideFlags: 0

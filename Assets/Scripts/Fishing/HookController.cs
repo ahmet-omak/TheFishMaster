@@ -56,24 +56,23 @@ public class HookController : MonoBehaviour, ITweenable
         UIManager.Instance.OnFishingStarted();
         hookButton.interactable = false;
         fishCount = 0;
-        camTweener = cam.transform.DOMoveY(-GameManager.Instance.length, hookData.FishingDownwardsTime).OnUpdate(delegate
-        {
-            if (cam.transform.position.y <= -11f)
-            {
-                isHookMoving = true;
-                transform.SetParent(cam.transform);
-            }
-        }).OnComplete(delegate
-        {
-            collider.enabled = true;
-            camTweener = cam.transform.DOMoveY(0, hookData.FishingUpwardsTime).OnUpdate(delegate
-             {
-                 if (cam.transform.position.y >= -10f)
-                 {
-                     StopFishing();
-                 }
-             });
-        });
+        camTweener = cam.transform.DOMoveY(-11, hookData.FishingUpwardsBurstTime).OnComplete(delegate
+           {
+               isHookMoving = true;
+               transform.SetParent(cam.transform);
+               camTweener = cam.transform.DOMoveY(-GameManager.Instance.length, hookData.FishingDownwardsTime).OnComplete(delegate
+               {
+
+                   collider.enabled = true;
+                   camTweener = cam.transform.DOMoveY(0, hookData.FishingUpwardsTime).OnUpdate(delegate
+                   {
+                       if (cam.transform.position.y >= -10f)
+                       {
+                           StopFishing();
+                       }
+                   });
+               });
+           });
         collider.enabled = false;
         hookedFishes.Clear();
     }
