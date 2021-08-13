@@ -3,13 +3,11 @@ using UnityEngine;
 
 public class UIManager : SingletonMonoBehaviour<UIManager>
 {
-    //TODO:
-    /*
-     * Code StartScreen
-     * Code money earn logic while waiting
-     */
-
+    [Header("Main Screen Values")]
     [SerializeField] MainScreen mainScreen;
+
+    [Header("Start Screen Values")]
+    [SerializeField] StartScreen startScreen;
 
     protected override void Awake()
     {
@@ -19,15 +17,18 @@ public class UIManager : SingletonMonoBehaviour<UIManager>
     private void Start()
     {
         InitMainScreenParameters();
+        mainScreen.sourceImage.SetActive(false);
+        startScreen.sourceImage.SetActive(true);
+        UpdateGainedMoneyText();
     }
 
     private void InitMainScreenParameters()
     {
         UpdateWalletText();
-   
+
         mainScreen.idleButtons.UpdateLengthButton(GameManager.Instance.length, GameManager.Instance.lengthCost);
-        
-        mainScreen.idleButtons.UpdateStrengthButton(GameManager.Instance.strength,GameManager.Instance.strengthCost);
+
+        mainScreen.idleButtons.UpdateStrengthButton(GameManager.Instance.strength, GameManager.Instance.strengthCost);
 
         mainScreen.idleButtons.UpdateOfflineEarningsButton(GameManager.Instance.offlineEarnings, GameManager.Instance.offlineEarningsCost);
 
@@ -36,10 +37,10 @@ public class UIManager : SingletonMonoBehaviour<UIManager>
 
     private void UpdateIdleButtons()
     {
-        int money = GameManager.Instance.wallet;
+        int currentMoney = GameManager.Instance.wallet;
 
         //Length Button
-        if (money >= GameManager.Instance.lengthCost)
+        if (currentMoney >= GameManager.Instance.lengthCost)
         {
             mainScreen.idleButtons.lengthButton.interactable = true;
         }
@@ -49,7 +50,7 @@ public class UIManager : SingletonMonoBehaviour<UIManager>
         }
 
         //Strength Button
-        if (money > GameManager.Instance.strengthCost)
+        if (currentMoney > GameManager.Instance.strengthCost)
         {
             mainScreen.idleButtons.strengthButton.interactable = true;
         }
@@ -59,7 +60,7 @@ public class UIManager : SingletonMonoBehaviour<UIManager>
         }
 
         //Offline Earnings Button
-        if (money > GameManager.Instance.offlineEarningsCost)
+        if (currentMoney > GameManager.Instance.offlineEarningsCost)
         {
             mainScreen.idleButtons.offlineEarningsButton.interactable = true;
 
@@ -73,6 +74,11 @@ public class UIManager : SingletonMonoBehaviour<UIManager>
     private void UpdateWalletText()
     {
         mainScreen.walletText.text = "$" + GameManager.Instance.wallet.ToString();
+    }
+
+    private void UpdateGainedMoneyText()
+    {
+        startScreen.gainedMoneyText.text = "$" + (GameManager.Instance.totalGain + " gained while waiting");
     }
 
     public void OnFishingStarted()
@@ -146,5 +152,21 @@ public class UIManager : SingletonMonoBehaviour<UIManager>
         UpdateWalletText();
 
         UpdateIdleButtons();
+    }
+
+    public void OnCollectButtonClicked()
+    {
+        GameManager.Instance.wallet += GameManager.Instance.totalGain;
+        startScreen.sourceImage.SetActive(false);
+        mainScreen.sourceImage.SetActive(true);
+        UpdateWalletText();
+    }
+
+    public void OnCollect2XButtonClicked()
+    {
+        GameManager.Instance.wallet += GameManager.Instance.totalGain * 2;
+        startScreen.sourceImage.SetActive(false);
+        mainScreen.sourceImage.SetActive(true);
+        UpdateWalletText();
     }
 }

@@ -71,7 +71,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
         if (str != string.Empty)
         {
             DateTime time = DateTime.Parse(str);
-            totalGain = (int)((DateTime.Now - time).TotalMinutes * offlineEarnings + 1);
+            totalGain = (int)((DateTime.Now - time).TotalMinutes * offlineEarnings);
         }
     }
 
