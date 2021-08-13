@@ -19,6 +19,7 @@ public class UIManager : SingletonMonoBehaviour<UIManager>
         InitMainScreenParameters();
         mainScreen.sourceImage.SetActive(false);
         startScreen.sourceImage.SetActive(true);
+        mainScreen.hookButton.interactable = false;
         UpdateGainedMoneyText();
     }
 
@@ -159,6 +160,7 @@ public class UIManager : SingletonMonoBehaviour<UIManager>
         GameManager.Instance.wallet += GameManager.Instance.totalGain;
         startScreen.sourceImage.SetActive(false);
         mainScreen.sourceImage.SetActive(true);
+        mainScreen.hookButton.interactable = true;
         UpdateWalletText();
     }
 
@@ -167,6 +169,7 @@ public class UIManager : SingletonMonoBehaviour<UIManager>
         GameManager.Instance.wallet += GameManager.Instance.totalGain * 2;
         startScreen.sourceImage.SetActive(false);
         mainScreen.sourceImage.SetActive(true);
+        mainScreen.hookButton.interactable = true;
         UpdateWalletText();
     }
 }
