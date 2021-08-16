@@ -46,7 +46,6 @@ public class HookController : MonoBehaviour, ITweenable
 
     private void Move()
     {
-        //Move Hook Along X-Axis
         Vector3 mousePos = cam.ScreenToWorldPoint(Input.mousePosition);
         transform.position = new Vector3(mousePos.x, transform.position.y, transform.position.z);
     }
@@ -129,7 +128,6 @@ public class HookController : MonoBehaviour, ITweenable
 
     private void Catch(Collider2D collision)
     {
-        //Try to catch a fish
         fishCount++;
         var fish = collision.GetComponent<FishController>();
         hookedFishes.Add(fish);

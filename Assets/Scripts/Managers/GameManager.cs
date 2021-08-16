@@ -44,7 +44,6 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
         strength = PlayerPrefs.GetInt("Strength", 3);
         offlineEarnings = PlayerPrefs.GetInt("Offline", 3);
         wallet = PlayerPrefs.GetInt("Wallet", 0);
-
         UpdateLengthCost();
         UpdateStrengthCost();
         UpdateOfflineEarningCost();
@@ -84,10 +83,5 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
             cost.allCosts[i] = cost.allCosts[i - 1] + cost.incrementer * 2;
             cost.incrementer = UnityEngine.Random.Range(15, 30);
         }
-    }
-
-    public void OnDeleteDataButtonClicked()
-    {
-        PlayerPrefs.DeleteAll();
     }
 }
